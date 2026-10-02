@@ -2,12 +2,12 @@
 SELECT * FROM users;
 
 --設問2
-SELECT name
+SELECT *
 FROM users
 WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31';
 
 --設問3
-SELECT age, gender
+SELECT *
 FROM users
 WHERE age<30 AND gender = 'female';
 
@@ -58,8 +58,8 @@ GROUP BY u.name
 ORDER BY total_amount DESC
 LIMIT 1;
 
---設問10
-SELECT p.product_name, COUNT(oi.id) AS order_count
+--設問10 order_itemsの合計数量　各商品が何回注文されたか
+SELECT p.product_name, SUM(oi.quantity) AS total_quantity
 FROM products AS p
 LEFT JOIN order_items AS oi
 ON oi.product_id = p.id
@@ -87,7 +87,7 @@ JOIN order_items AS oi
 ON oi.order_id = o.id
 JOIN products AS p
 ON p.id = oi.product_id
-WHERE u.name = 'テレビ';
+WHERE p.product_name = 'テレビ';
 
 --設問14
 SELECT o.order_date, u.name, p.product_name, oi.quantity, p.price * oi.quantity AS amount
@@ -177,17 +177,8 @@ SET order_date = '2024-05-01'
 WHERE order_date < '2024-05-01';
 
 --設問28
-ALTER TABLE orders
-DROP FOREIGN KEY orders_ibfk_1;
-
-ALTER TABLE orders
-ADD CONSTRAINT orders_ibfk_1
-FOREIGN KEY (user_id)
-REFERENCES users(id)
-ON DELETE SET NULL;
-
 DELETE FROM users
-WHERE id = 5;
+WHERE name = '高橋健一';
 
 --設問29
 DELETE FROM order_items
@@ -198,4 +189,4 @@ DELETE p
 FROM products AS p
 LEFT JOIN order_items AS oi
 ON oi.product_id = p.id
-WHERE oi.order_id IS NULL;
+WHERE oi.product_id IS NULL;
